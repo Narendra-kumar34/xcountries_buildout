@@ -1,23 +1,55 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 function App() {
+  const [countries, setCountries] = useState([]);
+
+  const fetchData = async () => {
+    try {
+      let response = await axios.get("https://restcountries.com/v3.1/all");
+      setCountries(response.data);
+    } catch (err) {
+      console.log("Error while fetching data: ", err);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const card = {
+    width : "200px",
+    borderRadius : "5px",
+    border : "1px solid #ccc",
+    margin : "10px",
+    padding : "10px",
+    display : "flex",
+    flexDirection : "column",
+    justifyContent : "center",
+    alignItems : "center",
+  }
+
+  const imageStyle = {
+    width : "100px",
+    height : "100px",
+  }
+
+  const container = {
+    display : "flex",
+    flexWrap : "wrap",
+    justifyContent : "center",
+    alignItems : "center",
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="App" style={container}>
+      {countries.map((country) => (
+        <div style={card} key={country.cca2}>
+          <img src={country.flags.png} alt={country.name.common} style={imageStyle}/>
+          <h1>{country.name.common}</h1>
+        </div>
+      ))}
     </div>
   );
 }
