@@ -10,7 +10,7 @@ function App() {
       let response = await axios.get("https://restcountries.com/v3.1/all");
       setCountries(response.data);
     } catch (err) {
-      console.log("Error while fetching data: ", err);
+      console.log("Error fetching data: ", err);
     }
   };
 
